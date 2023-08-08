@@ -2,3 +2,7 @@
 2. run python3 webtest.py
 3. Open up CanvasApp in files and open index.html in the browser
 4. It should work 
+
+
+----
+To install dependencies, run `pip install -r requirements.txt`
