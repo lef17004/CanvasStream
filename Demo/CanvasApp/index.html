@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>WebSocket App</h1>
+    <input type="text" id="myText" value="Some text...">
     <button id="sendButton">Send Message</button>
     <div id="output"></div>
 
@@ -21,11 +22,11 @@
         });
 
         socket.addEventListener('message', (event) => {
-            outputDiv.innerHTML += `<p>Received: ${event.data}</p>`;
+            outputDiv.innerHTML += `<p>${"> " + event.data}</p>`;
         });
 
         sendButton.addEventListener('click', () => {
-            socket.send('Hello from the client!');
+            socket.send(document.getElementById("myText").value);
         });
     </script>
 </body>
