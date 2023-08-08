@@ -1,0 +1,4 @@
+1. Navigate to Demo/GameApp in terminal
+2. run python3 webtest.py
+3. Open up CanvasApp in files and open index.html in the browser
+4. It should work 
