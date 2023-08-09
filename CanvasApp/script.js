@@ -5,6 +5,7 @@ socket.addEventListener('open', (event) => {
 });
 
 socket.addEventListener('message', (event) => {
+    
 });
 
 canvas.addEventListener('click', (event) => {
@@ -13,6 +14,19 @@ canvas.addEventListener('click', (event) => {
 
     const message = {
         type: "click",
+        x: x,
+        y: y
+    };
+
+    socket.send(JSON.stringify(message));
+});
+
+element.addEventListener('mousemove', (event) => {
+    const x = event.clientX;
+    const y = event.clientY;
+    
+    const message = {
+        type: "mousemove",
         x: x,
         y: y
     };
