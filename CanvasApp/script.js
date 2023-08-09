@@ -21,7 +21,7 @@ canvas.addEventListener('click', (event) => {
     socket.send(JSON.stringify(message));
 });
 
-element.addEventListener('mousemove', (event) => {
+canvas.addEventListener('mousemove', (event) => {
     const x = event.clientX;
     const y = event.clientY;
     
