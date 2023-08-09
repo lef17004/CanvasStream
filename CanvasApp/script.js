@@ -1,12 +1,27 @@
+function openConnection() {
+    return new WebSocket('ws://localhost:8765');
+}
+
 var canvas = document.getElementById("myCanvas");
-const socket = new WebSocket('ws://localhost:8765');
+
+let socket = openConnection();
 
 socket.addEventListener('open', (event) => {
+    var status = document.getElementById("status");
+    status.style.backgroundColor = "green";
+
+ });
+
+socket.addEventListener('close', (event) => {
+    var status = document.getElementById("status");
+    status.style.backgroundColor = "red";
+    // Attempt to reconnect every second
+    setTimeout(function() {
+        socket = openConnection();
+    }, 1000);
 });
 
-socket.addEventListener('message', (event) => {
-    
-});
+
 
 canvas.addEventListener('click', (event) => {
     const x = event.clientX - canvas.getBoundingClientRect().left;
@@ -21,15 +36,9 @@ canvas.addEventListener('click', (event) => {
     socket.send(JSON.stringify(message));
 });
 
-<<<<<<< HEAD
-canvas.addEventListener('mousemove', (event) => {
-    const x = event.clientX;
-    const y = event.clientY;
-=======
 // document.addEventListener('mousemove', (event) => {
 //     const x = event.clientX;
 //     const y = event.clientY;
->>>>>>> d10953758074c90d78756a2767eec1c25db616af
     
 //     const message = {
 //         type: "mousemove",
