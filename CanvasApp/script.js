@@ -9,6 +9,9 @@ function connectWebSocket(callback) {
     });
 
     socket.addEventListener('message', (event) => {
+        var canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+        drawFromEvent(event, ctx);
         console.log('Message from server:', event.data);
     });
 

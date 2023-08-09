@@ -22,6 +22,7 @@
         });
 
         socket.addEventListener('message', (event) => {
+            console.log(event);
             outputDiv.innerHTML += `<p>${"> " + event.data}</p>`;
         });
 
