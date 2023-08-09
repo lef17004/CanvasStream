@@ -21,19 +21,15 @@ async def echo(websocket, path):
                         "parameters": []
                     },
                     {   
-                        "function": "lineWidth",
-                        "parameters": [10]
+                        "function": "arc",
+                        "parameters": [event['x'],event["y"],50,0,6.28]
                     },
                     {   
-                        "function": "strokeStyle",
-                        "parameters": ['red']
+                        "function": "fillStyle",
+                        "parameters": ['orange']
                     },
                     {   
-                        "function": "rect",
-                        "parameters": [event['x'], event['y'], 290, 140]
-                    },
-                    {   
-                        "function": "stroke",
+                        "function": "fill",
                         "parameters": []
                     }
                 ]

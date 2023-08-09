@@ -17,7 +17,7 @@ function drawFromEvent(event, ctx) {
                 ctx.strokeStyle = parameterList[0];
                 break;
             case "rect":
-                ctx.rect(parameterList[0],parameterList[1],parameterList[2],parameterList[3])
+                ctx.rect(parameterList[0],parameterList[1],parameterList[2],parameterList[3]);
                 break;
             case "stroke":
                 if (parameterList.length === 0){
@@ -27,6 +27,14 @@ function drawFromEvent(event, ctx) {
                     ctx.stroke(parameterList[0]);
                 }
                 break;
+            case "arc":
+                ctx.arc(parameterList[0],parameterList[1],parameterList[2],parameterList[3],parameterList[4]);
+                break;
+            case "fillStyle":
+                ctx.fillStyle = parameterList[0];
+                break;
+            case "fill":
+                ctx.fill();
         }
     }
 };
