@@ -21,20 +21,26 @@ canvas.addEventListener('click', (event) => {
     socket.send(JSON.stringify(message));
 });
 
+<<<<<<< HEAD
 canvas.addEventListener('mousemove', (event) => {
     const x = event.clientX;
     const y = event.clientY;
+=======
+// document.addEventListener('mousemove', (event) => {
+//     const x = event.clientX;
+//     const y = event.clientY;
+>>>>>>> d10953758074c90d78756a2767eec1c25db616af
     
-    const message = {
-        type: "mousemove",
-        x: x,
-        y: y
-    };
+//     const message = {
+//         type: "mousemove",
+//         x: x,
+//         y: y
+//     };
 
-    socket.send(JSON.stringify(message));
-});
+//     socket.send(JSON.stringify(message));
+// });
 
-document.addEventListener('keypress', (event) => {
+canvas.addEventListener('keypress', (event) => {
     const message = {
         type: "keypress",
         key: event.key
