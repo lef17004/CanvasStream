@@ -3,31 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebSocket App</title>
+    <title>Canvas App</title>
 </head>
 <body>
-    <h1>WebSocket App</h1>
-    <input type="text" id="myText" value="Some text...">
-    <button id="sendButton">Send Message</button>
-    <div id="output"></div>
+    <canvas width="700px" height="700px"></canvas>
 
-    <script>
-        const outputDiv = document.getElementById('output');
-        const sendButton = document.getElementById('sendButton');
-
-        const socket = new WebSocket('ws://localhost:8765');
-
-        socket.addEventListener('open', (event) => {
-            outputDiv.innerHTML += '<p>Connected to WebSocket server.</p>';
-        });
-
-        socket.addEventListener('message', (event) => {
-            outputDiv.innerHTML += `<p>${"> " + event.data}</p>`;
-        });
-
-        sendButton.addEventListener('click', () => {
-            socket.send(document.getElementById("myText").value);
-        });
-    </script>
+    <script src="script.js"></script>
+    <style>
+         body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
 </body>
 </html>
