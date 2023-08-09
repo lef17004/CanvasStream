@@ -38,9 +38,9 @@ async def echo(websocket, path):
                     }
                 ]
 
-                for return_message in messages:
-                    return_string = json.dumps(return_message)
-                    await websocket.send(return_string)
+        
+                return_string = json.dumps(messages)
+                await websocket.send(return_string)
             print(message)
     except websockets.exceptions.ConnectionClosed:
         ...
