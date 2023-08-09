@@ -1,34 +1,41 @@
-function openConnection() {
-    return new WebSocket('ws://localhost:8765');
+
+function connectWebSocket(callback) {
+    const socket = new WebSocket('ws://localhost:8765');
+
+    socket.addEventListener('open', (event) => {
+        var status = document.getElementById("status");
+        status.style.backgroundColor = "green";
+        callback(socket);
+    });
+
+    socket.addEventListener('message', (event) => {
+        console.log('Message from server:', event.data);
+    });
+
+    socket.addEventListener('close', (event) => {
+        var status = document.getElementById("status");
+        status.style.backgroundColor = "red";
+
+        // Retry connection after a delay (e.g., 1 second)
+        setTimeout(() => connectWebSocket(callback), 1000);
+    });
+
+    socket.addEventListener('error', (event) => {
+        var status = document.getElementById("status");
+        status.style.backgroundColor = "red";
+
+        // Retry connection after a delay (e.g., 1 second)
+        setTimeout(() => connectWebSocket(callback), 1000);
+    });
 }
 
+let socket = null;
+
+connectWebSocket(function(newSocket) {
+    socket = newSocket;
+});
+
 var canvas = document.getElementById("myCanvas");
-
-let socket = openConnection();
-
-socket.addEventListener('open', (event) => {
-    var status = document.getElementById("status");
-    status.style.backgroundColor = "green";
-
- });
-
-socket.addEventListener('close', (event) => {
-    var status = document.getElementById("status");
-    status.style.backgroundColor = "red";
-    // Attempt to reconnect every second
-    setTimeout(function() {
-        socket = openConnection();
-    }, 1000);
-});
-
-socket.addEventListener('error', (event) => {
-    var status = document.getElementById("status");
-    status.style.backgroundColor = "red";
-
-        setTimeout(function() {
-        socket = openConnection();
-    }, 1000);
-});
 
 
 
