@@ -21,6 +21,15 @@ socket.addEventListener('close', (event) => {
     }, 1000);
 });
 
+socket.addEventListener('error', (event) => {
+    var status = document.getElementById("status");
+    status.style.backgroundColor = "red";
+
+        setTimeout(function() {
+        socket = openConnection();
+    }, 1000);
+});
+
 
 
 canvas.addEventListener('click', (event) => {
