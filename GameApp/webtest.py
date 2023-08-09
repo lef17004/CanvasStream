@@ -17,26 +17,30 @@ async def echo(websocket, path):
             if event['type'] == 'click':
                 messages = [
                     {   
-                        "function": "beginPath",
-                        "parameters": []
+                        "function": "lineTo",
+                        "parameters": [event['x'],event["y"]]
                     },
                     {   
-                        "function": "arc",
-                        "parameters": [event['x'],event["y"],50,0,6.28]
+                        "function": "strokeStyle",
+                        "parameters": ['black']
                     },
                     {   
-                        "function": "fillStyle",
-                        "parameters": ['orange']
-                    },
-                    {   
-                        "function": "fill",
+                        "function": "stroke",
                         "parameters": []
                     }
                 ]
+            if event['type'] == 'keydown':
+                messages = [
+                    {   
+                        "function": "clearRect",
+                        "parameters": [0,0,700,700]
+                    }
+                ]
+
 
         
-                return_string = json.dumps(messages)
-                await websocket.send(return_string)
+            return_string = json.dumps(messages)
+            await websocket.send(return_string)
             print(message)
     except websockets.exceptions.ConnectionClosed:
         ...

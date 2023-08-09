@@ -35,6 +35,17 @@ function drawFromEvent(event, ctx) {
                 break;
             case "fill":
                 ctx.fill();
+            case "moveTo":
+                ctx.moveTo(parameterList[0],parameterList[1]);
+                break;
+            case "lineTo":
+                ctx.lineTo(parameterList[0],parameterList[1]);
+                break;
+            case "clearRect":
+                ctx.clearRect(parameterList[0], parameterList[1], parameterList[2], parameterList[3]);
+                break;
+
+
         }
     }
 };
