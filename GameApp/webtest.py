@@ -17,23 +17,32 @@ async def echo(websocket, path):
             if event['type'] == 'click':
                 messages = [
                     {   
-                        "function": "lineTo",
+                        "type": "function",
+                        "name": "lineTo",
                         "parameters": [event['x'],event["y"]]
                     },
                     {   
-                        "function": "strokeStyle",
+                        "type": "variable",
+                        "name": "strokeStyle",
                         "parameters": ['black']
                     },
                     {   
-                        "function": "stroke",
+                        "type": "function",
+                        "name": "stroke",
                         "parameters": []
                     }
                 ]
             if event['type'] == 'keydown':
                 messages = [
                     {   
-                        "function": "clearRect",
+                        "type": "function",
+                        "name": "clearRect",
                         "parameters": [0,0,700,700]
+                    },
+                    {
+                        "type": "function",
+                        "name": "beginPath",
+                        "parameters": []
                     }
                 ]
 
