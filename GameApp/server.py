@@ -1,54 +1,46 @@
 import asyncio
 import websockets
-import webbrowser
-import os
+from game import Game
 import json
 
-current_script_directory = os.path.dirname(os.path.abspath(__file__))
-os.chdir(current_script_directory)
-path = '../CanvasApp/index.html'
-# webbrowser.open('file://' + os.path.realpath(path), 2)
 
-async def echo(websocket, path):
-    try:
-        async for message in websocket:
-            event = json.loads(message)
-            print(type(event))            
-            if event['type'] == 'click':
-                messages = [
-                    {   
-                        "type": "function",
-                        "name": "drawImage",
-                        "parameters": ["birdy.png",event['x'],event["y"],100,100]
-                    }
-                ]
-            if event['type'] == 'keydown':
-                messages = [
-                    {   
-                        "type": "function",
-                        "name": "clearRect",
-                        "parameters": [0,0,700,700]
-                    },
-                    {
-                        "type": "function",
-                        "name": "beginPath",
-                        "parameters": []
-                    }
-                ]
+# Global variables for WebSocket communication
+messages = asyncio.Queue()
+my_game = Game()
+clients = [None]
 
+async def websocket_server(websocket, path):
+    clients[0] =  websocket
+    async for message in websocket:
+        await messages.put(message)
+
+async def game_loop():
+    while True:
+        await asyncio.sleep(1 / 60)  # 1/60 of a second
+
+        processed_messages = []
+        while not messages.empty():
+            message = await messages.get()
+            processed_messages.append(json.loads(message))
+
+
+        response = my_game.loop(processed_messages)
+        
+        if response and clients[0]:
+            print('response:', response)
+            await clients[0].send(json.dumps(response))
 
         
-            return_string = json.dumps(messages)
-            await websocket.send(return_string)
-            print(message)
-    except websockets.exceptions.ConnectionClosed:
-        ...
-        #await websocket.wait_closed()
-        #asyncio.get_event_loop().stop()
 
-start_server = websockets.serve(echo, "localhost", 8765)
+        
 
+async def main():
+    server = await websockets.serve(websocket_server, "localhost", 8765)
+    
+    game_loop_task = asyncio.create_task(game_loop())
+    
+    await server.wait_closed()
+    game_loop_task.cancel()
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
-
+if __name__ == "__main__":
+    asyncio.run(main())
