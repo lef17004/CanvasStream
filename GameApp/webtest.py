@@ -18,18 +18,8 @@ async def echo(websocket, path):
                 messages = [
                     {   
                         "type": "function",
-                        "name": "lineTo",
-                        "parameters": [event['x'],event["y"]]
-                    },
-                    {   
-                        "type": "variable",
-                        "name": "strokeStyle",
-                        "parameters": ['black']
-                    },
-                    {   
-                        "type": "function",
-                        "name": "stroke",
-                        "parameters": []
+                        "name": "drawImage",
+                        "parameters": ["birdy.png",event['x'],event["y"],100,100]
                     }
                 ]
             if event['type'] == 'keydown':
