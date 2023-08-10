@@ -19,7 +19,7 @@ async def echo(websocket, path):
                     {   
                         "type": "function",
                         "name": "drawImage",
-                        "parameters": ["birdy.png",event['x'],event["y"],100,100]
+                        "parameters": ["birdy.png",event['x'],event["y"],163,115]
                     }
                 ]
             if event['type'] == 'keydown' and event['key'] == 'c':
