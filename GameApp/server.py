@@ -14,7 +14,7 @@ async def echo(websocket, path):
         async for message in websocket:
             event = json.loads(message)
             print(type(event))            
-            if event['type'] == 'click':
+            if event['type'] == 'mousemove':
                 messages = [
                     {   
                         "type": "function",
@@ -22,7 +22,7 @@ async def echo(websocket, path):
                         "parameters": ["birdy.png",event['x'],event["y"],100,100]
                     }
                 ]
-            if event['type'] == 'keydown':
+            if event['type'] == 'keydown' and event['key'] == 'c':
                 messages = [
                     {   
                         "type": "function",
