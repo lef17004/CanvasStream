@@ -1,18 +1,20 @@
-import subprocess
-import sys
+import multiprocessing
 import os
 
-def launch_scripts(script_paths):
-    for script_path in script_paths:
-        if sys.platform.startswith('win'):
-            subprocess.Popen(['start', 'cmd', '/k', 'python', script_path], shell=True)
-        elif sys.platform.startswith('darwin'):
-            subprocess.Popen(['open', '-a', 'Terminal', 'python', script_path])
-        elif sys.platform.startswith('linux'):
-            subprocess.Popen(['x-terminal-emulator', '-e', 'python', script_path])
-        else:
-            print("Unsupported platform:", sys.platform)
+def run_script(script_path):
+    os.system(f"python3 {script_path}")
 
 if __name__ == "__main__":
-    script_paths = ['CanvasApp/server.py', 'GameApp/server.py']  # Replace with your script paths
-    launch_scripts(script_paths)
+    script1_path = "GameApp/server.py"  # Replace with the actual path to script1.py
+    script2_path = "CanvasApp/server.py"  # Replace with the actual path to script2.py
+
+    process1 = multiprocessing.Process(target=run_script, args=(script1_path,))
+    process2 = multiprocessing.Process(target=run_script, args=(script2_path,))
+
+    process1.start()
+    process2.start()
+
+    process1.join()
+    process2.join()
+
+    print("Both scripts have completed.")
