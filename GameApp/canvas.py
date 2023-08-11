@@ -87,7 +87,6 @@ class Canvas:
         )
 
     def set_fillStyle(self,color):
-        print("filled")
         self.queue.append(
             {
                 "type": "variable",
