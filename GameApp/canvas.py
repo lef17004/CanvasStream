@@ -104,3 +104,12 @@ class Canvas:
                 "parameters": []
             }
         )
+
+    def fillRect(self,x,y,width,height):
+        self.queue.append(
+            {
+                "type": "function",
+                "name": "fillRect",
+                "parameters": [x,y,width,height]
+            }
+        )

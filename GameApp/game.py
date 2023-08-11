@@ -13,17 +13,19 @@ class Game:
             if event:
                 if event["type"] == "click":
                     print("clicked!!!")
-                    #ctx.drawImage("birdy.png" ,event["x"], event["y"],163,115)
-                    #ctx.beginPath()
-                    #ctx.lineWidth = '6'
-                    #ctx.strokeStyle = "red"
+                    ctx.drawImage("birdy.png" ,event["x"], event["y"],163,115)
+                    ctx.beginPath()
+                    ctx.lineWidth = '6'
+                    ctx.strokeStyle = "red"
                     #ctx.rect(event['x'],event['y'],290,140)
-                    #ctx.stroke()
+                    ctx.fillStyle = "red"
+                    ctx.fillRect(event['x'],event['y'],290,140)
+                    ctx.stroke()
 
-                    ctx.beginPath();
-                    ctx.arc(event['x'], event['y'], 50, 0, 6.28)
-                    ctx.fillStyle = "orange"
-                    ctx.fill();
+                    #ctx.beginPath();
+                    #ctx.arc(event['x'], event['y'], 50, 0, 6.28)
+                    #ctx.fillStyle = "orange"
+                    #ctx.fill();
 
 
 
