@@ -39,7 +39,7 @@ class Canvas:
     def set_lineWidth(self,parameters):
         self.queue.append(
             {
-                "type": "attribute",
+                "type": "variable",
                 "name": "lineWidth",
                 "parameters": [parameters]
             }
@@ -49,7 +49,7 @@ class Canvas:
     def set_strokeStyle(self,parameters):
         self.queue.append(
             {
-                "type": "attribute",
+                "type": "variable",
                 "name": "strokeStyle",
                 "parameters": [parameters]
             }
@@ -87,9 +87,10 @@ class Canvas:
         )
 
     def set_fillStyle(self,color):
+        print("filled")
         self.queue.append(
             {
-                "type": "attribute",
+                "type": "variable",
                 "name": "fillStyle",
                 "parameters": [color]
             }
