@@ -1,5 +1,4 @@
-var canvas = document.getElementById("myCanvas");
-let socket = new WebsocketConection();
+
 
 canvas.addEventListener('click', (event) => {
     const x = event.clientX - canvas.getBoundingClientRect().left;

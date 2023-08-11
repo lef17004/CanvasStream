@@ -16,7 +16,8 @@ class WebsocketConection {
     }
 
     message(event) {
-        drawFromEvent(event, this.context);
+        const eventJSON = JSON.parse(event.data);
+        interpretMessage(eventJSON);
     }
 
     close() {

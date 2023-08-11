@@ -19,7 +19,7 @@ class Game:
                     messages = [
                         {
                             "type": "function",
-                            "name": "drawImage",
+                            "name": "drawImg",
                             "parameters": [
                                 "birdy.png",
                                 event["x"],
@@ -45,7 +45,7 @@ class Game:
         messages += [
             {
                 "type": "function",
-                "name": "drawImage",
+                "name": "drawImg",
                 "parameters": ["birdy.png", self.x, self.y, 163, 115],
             }
         ]
