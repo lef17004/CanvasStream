@@ -7,6 +7,9 @@ class Game:
         self.acceleration = 0
 
     def loop(self, events):
+        # print('loop')
+        if events:
+            print(events)
         messages = [
             {"type": "function", "name": "clearRect", "parameters": [0, 0, 700, 700]}
         ]
