@@ -13,6 +13,9 @@ class WebsocketConection {
 
     open() {
         this.connectionStatus.setToConnected();
+        this.send({
+            type: "connect"
+        });
     }
 
     message(event) {
@@ -21,9 +24,11 @@ class WebsocketConection {
     }
 
     close() {
+        this.send({
+            type: "close"
+        });
         this.socket = null;
         this.connectionStatus.setToDisconnected();
-        
     }
 
     error() {
