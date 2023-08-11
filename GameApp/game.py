@@ -15,7 +15,7 @@ class Game:
             if event:
                 if event["type"] == "click":
                     print("clicked!!!")
-                    #ctx.drawImage(["birdy.png" ,event["x"], event["y"],163,115])
+                    #ctx.drawImage("birdy.png" ,event["x"], event["y"],163,115)
                     ctx.beginPath()
                     ctx.lineWidth = '6'
                     ctx.strokeStyle = "red"
@@ -25,14 +25,14 @@ class Game:
 
 
                 if event["type"] == "keydown" and event["key"] == "c":
-                    ctx.clearRect([0, 0, 700, 700])
+                    ctx.clearRect(0, 0, 700, 700)
                 if event["type"] == "keydown" and event["key"] == " ":
                     self.y -= 20
                     self.acceleration = 0
 
         
             
-        ctx.drawImage(["birdy.png", self.x, self.y, 163, 115])
+        ctx.drawImage("birdy.png", self.x, self.y, 163, 115)
             
         
         self.acceleration += self.grav

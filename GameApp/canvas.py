@@ -4,7 +4,12 @@ class Canvas:
     def __init__(self, queue):
         self.queue = queue
 
-    def drawImage(self, parameters):
+    def drawImage(self, path,x,y, width=None ,height=None):
+        parameters = [path,x,y]
+        if not width ==None:
+            parameters.append(width)
+        if not height ==None:
+            parameters.append(height)
         self.queue.append(
             {
                 "type": "function",
