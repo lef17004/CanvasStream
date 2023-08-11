@@ -9,18 +9,23 @@ class Game:
     def loop(self, events,ctx):
         #ctx.clearRect(0,0,700,700)
         #print('loop')
-        if events:
-            print(events)
         for event in events:
             if event:
                 if event["type"] == "click":
                     print("clicked!!!")
                     #ctx.drawImage("birdy.png" ,event["x"], event["y"],163,115)
-                    ctx.beginPath()
-                    ctx.lineWidth = '6'
-                    ctx.strokeStyle = "red"
-                    ctx.rect(event['x'],event['y'],290,140)
-                    ctx.stroke()
+                    #ctx.beginPath()
+                    #ctx.lineWidth = '6'
+                    #ctx.strokeStyle = "red"
+                    #ctx.rect(event['x'],event['y'],290,140)
+                    #ctx.stroke()
+
+                    ctx.beginPath();
+                    ctx.arc(event['x'], event['y'], 50, 0, 6.28)
+                    ctx.fillStyle = "orange"
+                    ctx.fill();
+
+
 
 
 

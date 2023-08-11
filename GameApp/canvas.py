@@ -65,13 +65,42 @@ class Canvas:
             }
         )
 
-
-
     def stroke(self):
         self.queue.append(
             {
                 "type": "function",
                 "name": "stroke",
+                "parameters": []
+            }
+        )
+    
+    def arc(self,x, y, radius, startAngle, endAngle, counterclockwise=None):
+        parameters = [x,y,radius,startAngle,endAngle]
+        if not counterclockwise == None:
+            parameters.append(counterclockwise)
+        self.queue.append(
+            {
+                "type": "function",
+                "name": "arc",
+                "parameters": parameters
+            }
+        )
+
+    def set_fillStyle(self,color):
+        self.queue.append(
+            {
+                "type": "attribute",
+                "name": "fillStyle",
+                "parameters": [color]
+            }
+        )
+    fillStyle = property(None,set_fillStyle)
+
+    def fill(self):
+        self.queue.append(
+            {
+                "type": "function",
+                "name": "fill",
                 "parameters": []
             }
         )
