@@ -1,8 +1,10 @@
 import multiprocessing
 import os
 
+
 def run_script(script_path):
     os.system(f"python3 {script_path}")
+
 
 if __name__ == "__main__":
     script1_path = "GameApp/server.py"  # Replace with the actual path to script1.py

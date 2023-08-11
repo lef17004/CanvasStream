@@ -8,11 +8,14 @@ os.chdir(current_script_directory)
 
 class MyRequestHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
-        self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        self.send_header(
+            "Cache-Control", "no-store, no-cache, must-revalidate, max-age=0"
+        )
         http.server.SimpleHTTPRequestHandler.end_headers(self)
 
+
 PORT = 8000
-webbrowser.open('http://localhost:8000', 2)
+webbrowser.open("http://localhost:8000", 2)
 
 with http.server.HTTPServer(("", PORT), MyRequestHandler) as httpd:
     print(f"Serving at port {PORT}")
