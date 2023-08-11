@@ -51,4 +51,5 @@ class Game:
         ]
         self.acceleration += self.grav
         self.y += self.acceleration
+        # return []
         return messages

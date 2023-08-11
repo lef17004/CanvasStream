@@ -34,3 +34,4 @@ function drawFromEvent(event, ctx) {
         }
     }
 }
+
