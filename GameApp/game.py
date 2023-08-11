@@ -39,7 +39,7 @@ class Game:
 
         
             
-        ctx.drawImage("birdy.png", self.x, self.y, 163, 115)
+        #ctx.drawImage("birdy.png", self.x, self.y, 163, 115)
             
         
         self.acceleration += self.grav
