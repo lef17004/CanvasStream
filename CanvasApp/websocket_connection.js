@@ -53,3 +53,4 @@ class WebsocketConection {
     }
 }
 
+let socket = new WebsocketConection();
