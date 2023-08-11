@@ -1,6 +1,7 @@
 let imageCache = {};
 
 var canvas = document.getElementById("myCanvas");
+canvas.oncontextmenu = () => false;
 let ctx = canvas.getContext("2d");
 
 

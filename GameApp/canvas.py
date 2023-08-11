@@ -114,3 +114,21 @@ class Canvas:
                 "parameters": [x,y,width,height]
             }
         )
+    
+    def moveTo(self,x,y):
+        self.queue.append(
+            {
+                "type": "function",
+                "name": "moveTo",
+                "parameters": [x,y]
+            }
+        )
+
+    def lineTo(self,x,y):
+        self.queue.append(
+            {
+                "type": "function",
+                "name": "lineTo",
+                "parameters": [x,y]
+            }
+        )
