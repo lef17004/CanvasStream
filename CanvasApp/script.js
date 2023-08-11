@@ -24,4 +24,3 @@ ctx.drawImg = function(imagePath, dx, dy, dWidth = null, dHeight = null) {
 };
 
 
-let socket = new WebsocketConection();
