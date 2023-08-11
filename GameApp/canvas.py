@@ -13,7 +13,7 @@ class Canvas:
         self.queue.append(
             {
                 "type": "function",
-                "name": "drawImage",
+                "name": "drawImg",
                 "parameters": parameters
             }
         )
