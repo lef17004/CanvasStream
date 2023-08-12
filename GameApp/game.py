@@ -13,7 +13,6 @@ class Game:
         self.prevx = 0
         self.prevy = 0
         self.path = []
-
     def loop(self, events,ctx):
 
         #ctx.clearRect(0,0,700,700)

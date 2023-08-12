@@ -1,8 +1,9 @@
 import asyncio
-
+from web_canvas import CanvasSubscriber, CanvasPublisher
 class Canvas:
-    def __init__(self, queue):
-        self.queue = queue
+    def __init__(self):
+        self.publisher =  CanvasPublisher()
+        self.queue = []
 
     def drawImage(self, path,x,y, width=None ,height=None):
         parameters = [path,x,y]
@@ -131,3 +132,8 @@ class Canvas:
                 "parameters": [x,y]
             }
         )
+    async def send(self):
+        if self.queue:
+            for img in self.queue:
+                await self.publisher.add(img)
+            self.queue = []
