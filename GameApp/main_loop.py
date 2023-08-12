@@ -1,8 +1,14 @@
+from collections import deque
 from web_canvas import CanvasSubscriber, CanvasPublisher
 from canvas import Canvas
+
 class MainLoop:
     def __init__(self):
         self.subscriber = CanvasSubscriber()
+        self.ctx = Canvas()
+        self.initialize_state()
+
+    def initialize_state(self):
         self.events = []
         self.x = 0
         self.y = 0
@@ -15,8 +21,7 @@ class MainLoop:
         self.pallet = ['black', 'Red', 'Blue', 'Green', 'Yellow', 'Pink', 'Grey', 'Purple', 'orange', 'brown']
         self.prevx = 0
         self.prevy = 0
-        self.path = []
-        self.ctx = Canvas()
+        self.path = deque()
 
     async def main_loop(self):
         events = await self.subscriber.get_all()
@@ -32,13 +37,11 @@ class MainLoop:
                 self.x = event['x']
                 self.y = event['y']
             elif event_type == "keydown" and event["key"] == "c":
-                self.ctx.clearRect(0, 0, 700, 700)
-                self.ctx.beginPath()
-                self.path = []
+                self.ctx.clearRect(0, 0, 700, 650)
                 self.draw_palette()
             elif event_type == 'wheel':
                 self.ctx.beginPath()
-                self.path = []
+                self.path.clear()
                 if event['deltaY'] < 0:
                     self.lineWidth += 1
                 else:
@@ -61,12 +64,25 @@ class MainLoop:
                 elif button == 2:
                     self.erase = False
                 self.ctx.beginPath()
-                self.path = []
+                self.path.clear()
             elif event_type == 'click' and event['button'] == 0 and self.y >= 650:
                 self.color = self.pallet[self.x // 70]
 
+            self.process_draw_erase()
+        
+        await self.ctx.send()
+
+    def process_draw_erase(self):
         if self.draw or self.erase:
+            if not self.path:
+                self.ctx.beginPath()
+                self.ctx.arc(self.x, self.y, self.lineWidth/2, 0, 6.28)
+                self.ctx.fillStyle = self.color if self.draw else 'white'
+                self.ctx.fill()
+
             self.path.append((self.x, self.y))
+            if len(self.path) > 3:
+                self.path.popleft()
 
             self.ctx.beginPath()
             self.ctx.strokeStyle = self.color if self.draw else 'white'
@@ -77,18 +93,9 @@ class MainLoop:
             self.ctx.stroke()
             self.draw_palette()
 
-
-        await self.ctx.send()
-
     def draw_palette(self):
-        for x in range(0, 10):
-            self.ctx.beginPath()
+        for x in range(len(self.pallet)):
             self.ctx.fillStyle = self.pallet[x]
             self.ctx.fillRect(70 * x, 650, 70, 100)
-            self.ctx.stroke()
-            self.ctx.stroke()
-
         
-            
-
-        
+        self.ctx.stroke()
