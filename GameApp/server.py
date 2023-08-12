@@ -16,6 +16,10 @@ class CanvasServer:
         
         self.client = websocket
         async for message in websocket:
+            message_dict = json.loads(message)
+            if message_dict['type'] == "reload":
+                print('reload')
+                self.client = None
             await self.events.add(json.loads(message))
 
     async def loop(self):

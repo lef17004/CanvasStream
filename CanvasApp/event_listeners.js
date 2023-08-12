@@ -102,6 +102,14 @@ class EventListeners {
         
             socket.send(message);
         });
+
+        addEventListener("beforeunload", (event) => {
+            const message = {
+                type: "reload"
+            };
+
+            socket.send(message);
+        });
         
     }
 
