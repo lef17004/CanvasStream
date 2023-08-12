@@ -12,6 +12,7 @@ class WebsocketConection {
     }
 
     open() {
+        console.log("open");
         this.connectionStatus.setToConnected();
         this.send({
             type: "connect"
@@ -24,6 +25,7 @@ class WebsocketConection {
     }
 
     close() {
+        console.log("close");
         this.send({
             type: "close"
         });
@@ -32,6 +34,7 @@ class WebsocketConection {
     }
 
     error() {
+        console.log("error");
         this.socket = null;
         this.connectionStatus.setToDisconnected();
         setTimeout(() => this.connect(), 1000);
@@ -58,4 +61,8 @@ class WebsocketConection {
     }
 }
 
-let socket = new WebsocketConection();
+let socket = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+    socket = new WebsocketConection();
+});

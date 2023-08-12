@@ -1,45 +1,35 @@
 import asyncio
 import websockets
-from game import Game
-from canvas import Canvas
 import json
-
+from web_canvas import CanvasSubscriber, CanvasPublisher
+from main_loop import MainLoop
 
 class CanvasServer:
     def __init__(self):
         self.messages = asyncio.Queue()
-        self.client_queue = []
         self.client = None
-        self.my_game = Game()
+        self.events = CanvasSubscriber()
+        self.to_client_events = CanvasPublisher()
+        self.main = MainLoop()
 
     async def server(self, websocket, path):
+        
         self.client = websocket
         async for message in websocket:
-            await self.messages.put(message)
+            await self.events.add(json.loads(message))
 
     async def loop(self):
-        mycanvas = Canvas(self.client_queue)
         while True:
             await asyncio.sleep(1 / 60)  # 1/60 of a second
+            await self.main.main_loop()
 
-            processed_messages = []
-            while not self.messages.empty():
-                message = await self.messages.get()
-                print(message)
-                processed_messages.append(json.loads(message))
+            to_send_messages = await self.to_client_events.get_all()
+            if to_send_messages:
+                print(to_send_messages)
 
-            response = []
-            while len(self.client_queue)>0:
-                images = self.client_queue[0]
-                self.client_queue.remove(images)
-                #print(images)
-                response.append(images)
-
-            self.my_game.loop(processed_messages,mycanvas)
-
-            if self.client and response:
-                #print(response)
-                await self.client.send(json.dumps(response))
+            if self.client and to_send_messages:
+                await self.client.send(json.dumps(to_send_messages))
+            
 
     async def start_server(self):
         server = await websockets.serve(self.server, "localhost", 8765)
