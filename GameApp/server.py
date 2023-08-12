@@ -3,6 +3,7 @@ import websockets
 import json
 from web_canvas import CanvasSubscriber, CanvasPublisher
 from main_loop import MainLoop
+import time
 
 class CanvasServer:
     def __init__(self):
@@ -11,6 +12,8 @@ class CanvasServer:
         self.events = CanvasSubscriber()
         self.to_client_events = CanvasPublisher()
         self.main = MainLoop()
+        self.frame_time = 1 / 60  # Target frame time in seconds
+
 
     async def server(self, websocket, path):
         
@@ -24,7 +27,8 @@ class CanvasServer:
 
     async def loop(self):
         while True:
-            await asyncio.sleep(1 / 60)  # 1/60 of a second
+            start_time = time.time()
+
             await self.main.main_loop()
 
             to_send_messages = await self.to_client_events.get_all()
@@ -33,6 +37,13 @@ class CanvasServer:
 
             if self.client and to_send_messages:
                 await self.client.send(json.dumps(to_send_messages))
+
+            elapsed_time = time.time() - start_time
+            sleep_time = self.frame_time - elapsed_time
+            if sleep_time > 0:
+                await asyncio.sleep(sleep_time)
+            else:
+                print("Frame took too long to process")
             
 
     async def start_server(self):
