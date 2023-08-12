@@ -38,7 +38,6 @@ class MainLoop:
                 self.y = event['y']
             elif event_type == "keydown" and event["key"] == "c":
                 self.ctx.clearRect(0, 0, 700, 650)
-                self.draw_palette()
             elif event_type == 'wheel':
                 self.ctx.beginPath()
                 self.path.clear()
@@ -68,7 +67,8 @@ class MainLoop:
             elif event_type == 'click' and event['button'] == 0 and self.y >= 650:
                 self.color = self.pallet[self.x // 70]
 
-            self.process_draw_erase()
+        self.process_draw_erase()
+        self.draw_palette()
         
         await self.ctx.send()
 
@@ -91,7 +91,6 @@ class MainLoop:
             for point in self.path:
                 self.ctx.lineTo(point[0], point[1])
             self.ctx.stroke()
-            self.draw_palette()
 
     def draw_palette(self):
         for x in range(len(self.pallet)):
