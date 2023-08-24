@@ -241,8 +241,67 @@ class EventListeners {
 
             this.socket.send(message);
         });
-        
-    }
-}
+        window.addEventListener("gamepadconnected", (event) => {
+            const gamepad = event.gamepad;
+            const message = {
+                type: "controller",
+                status: "connected",
+                gamepadIndex: gamepad.index
+            };
+            socket.send(message);
+        });
+
+        // Handle gamepad disconnection
+        window.addEventListener("gamepaddisconnected", (event) => {
+            const gamepad = event.gamepad;
+            const message = {
+                type: "controller",
+                status: "disconnected",
+                gamepadIndex: gamepad.index
+            };
+            socket.send(message);
+        });
+        setInterval(() => {
+            const gamepads = navigator.getGamepads();
+            const controllerStates = {};
+
+            for (const gamepad of gamepads) {
+                if (gamepad) {
+                    // Handle button presses
+                    const buttonStates = {};
+                    for (let i = 0; i < gamepad.buttons.length; i++) {
+                        const button = gamepad.buttons[i];
+                        buttonStates[`button${i + 1}`] = button.pressed ? "pressed" : "unpressed";
+                    }
+                    
+                    // Handle joystick axes
+                    const joystickStates = {};
+                    const joystickAxes = gamepad.axes.length / 2; // Divide by 2 since each joystick has 2 axes
+                    for (let i = 0; i < joystickAxes; i++) {
+                        const xIndex = i * 2;
+                        const yIndex = i * 2 + 1;
+                        const x = gamepad.axes[xIndex];
+                        const y = gamepad.axes[yIndex];
+                        joystickStates[`joystick${i + 1}`] = { x, y };
+                    }
+
+                    controllerStates[gamepad.index] = {
+                        buttons: buttonStates,
+                        joysticks: joystickStates
+                    };
+                }
+            }
+
+            const message = {
+                type: "controller_states",
+                controllerStates: controllerStates
+            };
+
+            socket.send(message);
+
+                    }, 1000); // 1000 milliseconds = 1 second
+                    
+            }
+        }
 
 main();

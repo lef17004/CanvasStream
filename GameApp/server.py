@@ -23,6 +23,7 @@ class CanvasServer:
             if message_dict['type'] == "reload":
                 print('reload')
                 self.client = None
+            print(message)
             await self.events.add(json.loads(message))
 
     async def loop(self):
@@ -33,7 +34,8 @@ class CanvasServer:
 
             to_send_messages = await self.to_client_events.get_all()
             if to_send_messages:
-                print(to_send_messages)
+                #print(to_send_messages)
+                ...
 
             if self.client and to_send_messages:
                 await self.client.send(json.dumps(to_send_messages))
