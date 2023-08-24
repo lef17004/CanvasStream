@@ -1,0 +1,13 @@
+{
+    "eventListeners" : [
+        "click",
+        "mousedown",
+        "mouseup",
+        "mousemove",
+        "keypress",
+        "keydown",
+        "keyup",
+        "wheel",
+        "beforeunload"
+    ]
+}

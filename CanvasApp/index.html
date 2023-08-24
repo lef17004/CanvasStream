@@ -8,21 +8,25 @@
 <body>
     <div class="image-container">
         <img src="assets/exit.png" alt="Image 1" class="top-left-image">
-        <img id="status" src="assets/disconnected_status.png" alt="Image 2" class="top-left-image">
+        <div class="status-container">
+            <img id="status" src="assets/disconnected_status.png" alt="Image 2" class="top-left-image">
+            <img id="status2" src="assets/connected_status.png" alt="Image 2" class="top-left-image">
+        </div>
     </div>
     <canvas id="myCanvas" width="700px" height="700px"></canvas>
   
+    <script>
+        // Your JavaScript code goes here
+    </script>
     
-    <script src="script.js"></script>
-    <script src="status.js"></script>
+    <script src="script2.js"></script>
+    <!-- <script src="status.js"></script>
     <script src="message_interpreter.js"></script>
     <script src="websocket_connection.js"></script>
-    <script src="event_listeners.js"></script>
+    <script src="event_listeners.js"></script> -->
     
-    
-
     <script>
-        status = new Status();
+        //status = new Status();
     </script>
     
     <style>
@@ -50,6 +54,24 @@
             width: 50px;
             height: 50px;
             margin: 5px;
+        }
+
+        .status-container {
+            position: relative; /* Create a relative position context for status images */
+        }
+
+        #status {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1; /* Set higher z-index for overlapping */
+        }
+
+        #status2 {
+            position: absolute;
+            top: 0px; /* Adjust the vertical position */
+            left: 0;
+            z-index: 0; /* Lower z-index for overlapping */
         }
     </style>
 </body>

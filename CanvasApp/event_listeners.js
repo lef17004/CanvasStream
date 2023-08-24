@@ -1,4 +1,16 @@
 
+const supportedEvents = {
+    click: "canvas",
+    mousedown: "cavnas",
+    mouseup: "canvas",
+    mousemove: "canvas",
+    wheel: "canvas",
+    keypress: "document",
+    keydown: "document",
+    keyup: "document",
+    beforeunload: "browser"
+};
+
 class EventListeners {
     constructor() {
         this.canvas = document.getElementById("myCanvas");
@@ -114,7 +126,9 @@ class EventListeners {
     }
 
     addEventListener(name) {
-        
+        if (name in supportedEvents) {
+            
+        }
     }
 }
 

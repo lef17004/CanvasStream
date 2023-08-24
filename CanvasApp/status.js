@@ -1,13 +1,13 @@
 class Status {
     constructor() {
-        this.status = document.getElementById("status")
+        this.disconnectedStatus = document.getElementById("status");
     }
 
     setToConnected() {
-        this.status.src = "assets/connected_status.png";
+        this.disconnectedStatus.style.display = "none";
     }
 
     setToDisconnected() {
-        this.status.src = "assets/disconnected_status.png";
+        this.disconnectedStatus.style.display = "block";
     }
 }
