@@ -263,43 +263,34 @@ class EventListeners {
         });
         setInterval(() => {
             const gamepads = navigator.getGamepads();
-            const controllerStates = {};
+            const message = {
+                type: "controller_states"
+            };
 
             for (const gamepad of gamepads) {
                 if (gamepad) {
                     // Handle button presses
-                    const buttonStates = {};
                     for (let i = 0; i < gamepad.buttons.length; i++) {
                         const button = gamepad.buttons[i];
-                        buttonStates[`button${i + 1}`] = button.pressed ? "pressed" : "unpressed";
+                        const buttonState = button.pressed ? "pressed" : "unpressed";
+                        message[`button${i + 1}`] = buttonState;
                     }
-                    
+
                     // Handle joystick axes
-                    const joystickStates = {};
                     const joystickAxes = gamepad.axes.length / 2; // Divide by 2 since each joystick has 2 axes
                     for (let i = 0; i < joystickAxes; i++) {
                         const xIndex = i * 2;
                         const yIndex = i * 2 + 1;
                         const x = gamepad.axes[xIndex];
                         const y = gamepad.axes[yIndex];
-                        joystickStates[`joystick${i + 1}`] = { x, y };
+                        message[`joystick${i + 1}_x`] = x;
+                        message[`joystick${i + 1}_y`] = y;
                     }
-
-                    controllerStates[gamepad.index] = {
-                        buttons: buttonStates,
-                        joysticks: joystickStates
-                    };
                 }
             }
 
-            const message = {
-                type: "controller_states",
-                controllerStates: controllerStates
-            };
-
-            socket.send(message);
-
-                    }, 1000); // 1000 milliseconds = 1 second
+            socket.send(message); 
+        }, 16.7); // 1000 milliseconds = 1 second
                     
             }
         }
