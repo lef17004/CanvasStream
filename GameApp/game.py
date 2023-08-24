@@ -65,15 +65,16 @@ class Game:
                 
         if self.draw:
             # Add the current point to the path
-            self.path.append((self.x, self.y))
+            #self.path.append((self.x, self.y))
+            ctx.lineTo(point[0], point[1])
 
-            ctx.beginPath()
+            #ctx.beginPath()
             ctx.strokeStyle = self.color
             ctx.lineWidth = self.lineWidth
             
             # Connect all points in the path to create a continuous line
-            for point in self.path:
-                ctx.lineTo(point[0], point[1])
+            #for point in self.path:
+            #    ctx.lineTo(point[0], point[1])
             ctx.stroke()
         if self.erase:
             # Similar to drawing, maintain a separate path for erasing

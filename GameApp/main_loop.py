@@ -40,7 +40,7 @@ class MainLoop:
                 self.ctx.clearRect(0, 0, 700, 650)
             elif event_type == 'wheel':
                 self.ctx.beginPath()
-                self.path.clear()
+                #self.path.clear()
                 if event['deltaY'] < 0:
                     self.lineWidth += 1
                 else:
