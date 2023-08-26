@@ -25,6 +25,9 @@ class MainLoop:
 
     async def main_loop(self):
         self.ctx.clearRect(0, 0, 700, 700)
+        for x in range(len(self.pallet)):
+            self.ctx.fillStyle = self.pallet[x]
+            self.ctx.fillRect(70 * x, 650, 70, 100)
         events = await self.subscriber.get_all()
 
         for event in events:
@@ -40,10 +43,59 @@ class MainLoop:
                     self.x+= x*5
                     self.y+= y*5
                     print(f"x: {self.x} y: {self.y}")
+                if 'button2' in event:
+                    if event['button2'] == 'pressed':
+                        print("PRESSED")
+                        self.draw = True
+                    elif event['button2'] == 'unpressed':
+                        self.path.append((self.x, self.y,'new'))
+                        self.draw = False
+                        #self.path.clear()
+                if 'button3' in event:
+                    if event['button3'] == 'pressed':
+                        self.ctx.clearRect(0, 0, 700, 700)
+                        self.path.clear()
+                        
 
+
+
+        self.process_draw_erase()
                 
         self.ctx.beginPath()
         self.ctx.lineWidth = "1"
         self.ctx.arc(self.x, self.y, 15, 0, 6.28)
         self.ctx.stroke()
         await self.ctx.send()
+
+    def process_draw_erase(self):
+        #print('AAA')
+        #if self.draw or self.erase:
+        #print("BBB")
+        if not self.path:
+            #print("CCC")
+            self.ctx.beginPath()
+            self.ctx.arc(self.x, self.y, self.lineWidth/2, 0, 6.28)
+            self.ctx.fillStyle = self.color
+            self.ctx.fill()
+        if self.draw:
+            self.path.append((self.x, self.y,'continue'))
+            #if len(self.path) > 3:
+            #    self.path.popleft()
+                #print("DDD")
+
+        self.ctx.beginPath()
+        self.ctx.strokeStyle = self.color
+        self.ctx.lineWidth = self.lineWidth
+        #print("EEE")
+        for point in self.path:
+            if point[2] == 'continue':
+                print('continue')
+                self.ctx.lineTo(point[0], point[1])
+            else:
+                print("noncontinue")
+                self.ctx.stroke()
+                self.ctx.beginPath()
+                self.ctx.strokeStyle = self.color
+                self.ctx.lineWidth = self.lineWidth
+                #self.ctx.lineTo(point[0], point[1])
+        self.ctx.stroke()
