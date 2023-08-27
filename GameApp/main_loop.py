@@ -43,12 +43,19 @@ class MainLoop:
                     self.x+= x*5
                     self.y+= y*5
                     print(f"x: {self.x} y: {self.y}")
+                if 'joystick2_x' in event and 'joystick2_y' in event:
+                    x2 = event['joystick2_x']
+                    y2 = event['joystick2_y']
+                    if y2 != 0:
+                        if self.lineWidth>=1 or y2<0:
+                            self.lineWidth -= y2
+                            self.path.append((self.x, self.y,'new',self.lineWidth))
                 if 'button2' in event:
                     if event['button2'] == 'pressed':
                         print("PRESSED")
                         self.draw = True
                     elif event['button2'] == 'unpressed':
-                        self.path.append((self.x, self.y,'new'))
+                        self.path.append((self.x, self.y,'new',self.lineWidth))
                         self.draw = False
                         #self.path.clear()
                 if 'button3' in event:
@@ -78,7 +85,7 @@ class MainLoop:
             self.ctx.fillStyle = self.color
             self.ctx.fill()
         if self.draw:
-            self.path.append((self.x, self.y,'continue'))
+            self.path.append((self.x, self.y,'continue',self.lineWidth))
             #if len(self.path) > 3:
             #    self.path.popleft()
                 #print("DDD")
@@ -89,13 +96,11 @@ class MainLoop:
         #print("EEE")
         for point in self.path:
             if point[2] == 'continue':
-                print('continue')
                 self.ctx.lineTo(point[0], point[1])
             else:
-                print("noncontinue")
                 self.ctx.stroke()
                 self.ctx.beginPath()
                 self.ctx.strokeStyle = self.color
-                self.ctx.lineWidth = self.lineWidth
+                self.ctx.lineWidth = point[3]
                 #self.ctx.lineTo(point[0], point[1])
         self.ctx.stroke()
