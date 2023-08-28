@@ -25,9 +25,6 @@ class MainLoop:
 
     async def main_loop(self):
         self.ctx.clearRect(0, 0, 700, 700)
-        for x in range(len(self.pallet)):
-            self.ctx.fillStyle = self.pallet[x]
-            self.ctx.fillRect(70 * x, 650, 70, 100)
         events = await self.subscriber.get_all()
 
         for event in events:
@@ -67,10 +64,12 @@ class MainLoop:
 
 
         self.process_draw_erase()
-                
+        for x in range(len(self.pallet)):
+            self.ctx.fillStyle = self.pallet[x]
+            self.ctx.fillRect(70 * x, 650, 70, 100)
         self.ctx.beginPath()
-        self.ctx.lineWidth = "1"
-        self.ctx.arc(self.x, self.y, 15, 0, 6.28)
+        self.ctx.lineWidth = 1
+        self.ctx.arc(self.x, self.y, self.lineWidth/2, 0, 6.28)
         self.ctx.stroke()
         await self.ctx.send()
 
@@ -78,12 +77,12 @@ class MainLoop:
         #print('AAA')
         #if self.draw or self.erase:
         #print("BBB")
-        if not self.path:
-            #print("CCC")
-            self.ctx.beginPath()
-            self.ctx.arc(self.x, self.y, self.lineWidth/2, 0, 6.28)
-            self.ctx.fillStyle = self.color
-            self.ctx.fill()
+        #if not self.path:
+        #    #print("CCC")
+        #    self.ctx.beginPath()
+        #    self.ctx.arc(self.x, self.y, self.lineWidth/2, 0, 6.28)
+        #    self.ctx.fillStyle = self.color
+        #    self.ctx.fill()
         if self.draw:
             self.path.append((self.x, self.y,'continue',self.lineWidth))
             #if len(self.path) > 3:
