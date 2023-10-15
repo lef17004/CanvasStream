@@ -1,102 +1,105 @@
-class Game:
+from collections import deque
+from web_canvas import CanvasSubscriber, CanvasPublisher
+from canvas import Canvas
+
+class MainLoop:
     def __init__(self):
+        self.subscriber = CanvasSubscriber()
+        self.ctx = Canvas()
+        self.initialize_state()
+
+    def initialize_state(self):
         self.events = []
-        self.x = 0
-        self.y = 0
+        self.x = 350
+        self.y = 350
         self.grav = 0.1
         self.acceleration = 0
         self.draw = False
         self.erase = False
-        self.lineWidth=5
+        self.lineWidth = 5
         self.color = "black"
-        self.pallet = ['black','Red','Blue','Green','Yellow','Pink','Grey','Purple','orange','brown']
+        self.pallet = ['black', 'Red', 'Blue', 'Green', 'Yellow', 'Pink', 'Grey', 'Purple', 'orange', 'brown']
         self.prevx = 0
         self.prevy = 0
-        self.path = []
-    def loop(self, events,ctx):
+        self.path = deque()
 
-        #ctx.clearRect(0,0,700,700)
-        #print('loop')
+    async def main_loop(self):
+        self.ctx.clearRect(0, 0, 700, 700)
+        events = await self.subscriber.get_all()
+
         for event in events:
-            if event:
-                if event["type"] == "mousedown"and event['button']==0:
-                    self.draw = True
-                    self.prevx = self.x
-                    self.prevy = self.y
-                    self.x = event['x']
-                    self.y = event['y']
-                if event["type"] == "mousemove" :
-                    self.prevx = self.x
-                    self.prevy = self.y
-                    self.x = event['x']
-                    self.y = event['y']
-                if event["type"] == "keydown" and event["key"] == "c":
-                    ctx.clearRect(0, 0, 700, 700)
-                    ctx.beginPath()
-                    self.path = []
-                if event['type'] == "mouseup"and event['button']==0:
-                    self.draw = False
-                    ctx.beginPath()
-                    self.path = []
-                if event['type'] == 'wheel':
-                    ctx.beginPath()
-                    self.path = []
-                    print("scrolling")
-                    if event['deltaY'] < 0:
-                        print("increasing")
-                        self.lineWidth += 1  # Increase line width
-                    else:
-                        print("Decreasing")
-                        if (self.lineWidth>1):
-                            self.lineWidth -= 1
-                if event["type"] == "mousedown"and event['button']==2:
-                    self.erase = True
-                    self.prevx = self.x
-                    self.prevy = self.y
-                    self.x = event['x']
-                    self.y = event['y']
-                if event['type'] == "mouseup"and event['button']==2:
-                    self.erase = False
-                    ctx.beginPath()
-                    self.path = []
-                if event['type'] == 'click' and event['button'] ==0 and self.y>=650:
-                    self.color = self.pallet[self.x//70]
+            if not event:
+                continue
 
-                
+            event_type = event['type']
+            if event_type == "controller_states":
+                if 'joystick1_x' in event and 'joystick1_y' in event:
+                    x = event['joystick1_x']
+                    y = event['joystick1_y']
+                    print(f"Joystick 1 X: {x}, Y: {y}")
+                    self.x+= x*5
+                    self.y+= y*5
+                    print(f"x: {self.x} y: {self.y}")
+                if 'joystick2_x' in event and 'joystick2_y' in event:
+                    x2 = event['joystick2_x']
+                    y2 = event['joystick2_y']
+                    if y2 != 0:
+                        if self.lineWidth>=1 or y2<0:
+                            self.lineWidth -= y2
+                            self.path.append((self.x, self.y,'new',self.lineWidth))
+                if 'button2' in event:
+                    if event['button2'] == 'pressed':
+                        print("PRESSED")
+                        self.draw = True
+                    elif event['button2'] == 'unpressed':
+                        self.path.append((self.x, self.y,'new',self.lineWidth))
+                        self.draw = False
+                        #self.path.clear()
+                if 'button3' in event:
+                    if event['button3'] == 'pressed':
+                        self.ctx.clearRect(0, 0, 700, 700)
+                        self.path.clear()
+                        
+
+
+
+        self.process_draw_erase()
+        for x in range(len(self.pallet)):
+            self.ctx.fillStyle = self.pallet[x]
+            self.ctx.fillRect(70 * x, 650, 70, 100)
+        self.ctx.beginPath()
+        self.ctx.lineWidth = 1
+        self.ctx.arc(self.x, self.y, self.lineWidth/2, 0, 6.28)
+        self.ctx.stroke()
+        await self.ctx.send()
+
+    def process_draw_erase(self):
+        #print('AAA')
+        #if self.draw or self.erase:
+        #print("BBB")
+        #if not self.path:
+        #    #print("CCC")
+        #    self.ctx.beginPath()
+        #    self.ctx.arc(self.x, self.y, self.lineWidth/2, 0, 6.28)
+        #    self.ctx.fillStyle = self.color
+        #    self.ctx.fill()
         if self.draw:
-            # Add the current point to the path
-            #self.path.append((self.x, self.y))
-            ctx.lineTo(point[0], point[1])
+            self.path.append((self.x, self.y,'continue',self.lineWidth))
+            #if len(self.path) > 3:
+            #    self.path.popleft()
+                #print("DDD")
 
-            #ctx.beginPath()
-            ctx.strokeStyle = self.color
-            ctx.lineWidth = self.lineWidth
-            
-            # Connect all points in the path to create a continuous line
-            #for point in self.path:
-            #    ctx.lineTo(point[0], point[1])
-            ctx.stroke()
-        if self.erase:
-            # Similar to drawing, maintain a separate path for erasing
-            self.path.append((self.x, self.y))
-
-            ctx.beginPath()
-            ctx.strokeStyle = 'white'
-            ctx.lineWidth = self.lineWidth
-
-            for point in self.path:
-                ctx.lineTo(point[0], point[1])
-            ctx.stroke()
-        for x in range(0,10):
-            ctx.beginPath()
-            ctx.fillStyle = self.pallet[x]
-            ctx.fillRect(70*x, 650, 70, 100);  
-            ctx.stroke()
-        
-
-        
-            
-        
-            
-        
-
+        self.ctx.beginPath()
+        self.ctx.strokeStyle = self.color
+        self.ctx.lineWidth = self.lineWidth
+        #print("EEE")
+        for point in self.path:
+            if point[2] == 'continue':
+                self.ctx.lineTo(point[0], point[1])
+            else:
+                self.ctx.stroke()
+                self.ctx.beginPath()
+                self.ctx.strokeStyle = self.color
+                self.ctx.lineWidth = point[3]
+                #self.ctx.lineTo(point[0], point[1])
+        self.ctx.stroke()
